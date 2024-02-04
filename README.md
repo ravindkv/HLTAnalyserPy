@@ -6,7 +6,7 @@ A set of tools to analyse the HLT EDM files in py fwlite
 
 ```
 #in your CMSSW src directory
-git clone ssh://git@gitlab.cern.ch:7999/sharper/HLTAnalyserPy.git Analysis/HLTAnalyserPy
+git clone git@github.com:ravindkv/HLTAnalyserPy.git Analysis/HLTAnalyserPy
 scram b -j 4
 ```
 
