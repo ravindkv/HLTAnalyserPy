@@ -52,9 +52,10 @@ class EgHLTRun3Tree:
 #        self.evtdatavars.append(TreeVar(self.tree,"rho/F",UnaryFunc('get_fundtype("rho",0)')))
 
         #l1 ntup
+        '''
         self.l1_upgrade_filler = ROOT.L1Analysis.L1AnalysisL1Upgrade()
         self.l1_upgrade_data = self.l1_upgrade_filler.getData()
-        self.tree.Branch("L1Upgrade","L1Analysis::L1AnalysisL1UpgradeDataFormat",self.l1_upgrade_data,32000,3)
+        self.tree.Branch("L1Upgrade","L1Analysis::L1AnalysisL1UpgradeDataFormat",self.l1_upgrade_data,32000,3)     '''
 
         #max_pthats = 400
         #self.nr_pthats = TreeVar(self.tree,"nrPtHats/i",UnaryFunc(partial(len)))
@@ -116,7 +117,7 @@ class EgHLTRun3Tree:
         self.egobj_vars = []
         for name,func in six.iteritems(vars_):
             self.egobj_vars.append(TreeVar(self.tree,"eg_"+name,func,max_egs,egobjnr_name))
-        self.egobj_vars.append(TreeVecVar(self.tree,"eg_scRegFeatures/float",CoreTools.UnaryFunc(partial(getSCRegFeatures,self.evtdata))))
+        ##self.egobj_vars.append(TreeVecVar(self.tree,"eg_scRegFeatures/float",CoreTools.UnaryFunc(partial(getSCRegFeatures,self.evtdata))))
 
         gen_vars_names = {
             'energy/F' : UnaryFunc(partial(ROOT.reco.GenParticle.energy)),
@@ -146,10 +147,10 @@ class EgHLTRun3Tree:
             'towerHoE/F' : UnaryFunc("towerHoE()")
         }
 
-        self.l1eg_vars = []
-        for name,func in six.iteritems(l1eg_vars_names):
-            self.l1eg_vars.append(TreeVar(self.tree,"eg_l1eg_"+name,func,max_egs,egobjnr_name))
-
+       ##self.l1eg_vars = []
+       ##for name,func in six.iteritems(l1eg_vars_names):
+       ##    self.l1eg_vars.append(TreeVar(self.tree,"eg_l1eg_"+name,func,max_egs,egobjnr_name))
+        '''
         trig_names = ["Gen_QCDMuGenFilter",
                       "Gen_QCDBCToEFilter",
                       "Gen_QCDEmEnrichingFilter",
@@ -160,7 +161,7 @@ class EgHLTRun3Tree:
             self.trig_vars.append(TreeVar(self.tree,"path_{}/b".format(name),
                                           UnaryFunc(partial(TrigTools.TrigResults.result,name))))
 
-
+        '''
         self.initialised = True
 
     def fill(self):
@@ -191,8 +192,8 @@ class EgHLTRun3Tree:
         l1egs  = self.evtdata.get("l1egamma")
 
         self.egobj_nr.fill(egobjs)
-        for var_ in itertools.chain(self.gen_vars,self.l1eg_vars):
-            var_.clear()
+        ##for var_ in itertools.chain(self.gen_vars,self.l1eg_vars):
+        ##    var_.clear()
 
         gen_eles = GenTools.get_genparts(self.evtdata.get("genparts"),
                                          pid=22,antipart=True,
@@ -209,22 +210,21 @@ class EgHLTRun3Tree:
                     var_.fill(gen_obj,objnr)
 
             l1eg_obj = CoreTools.get_best_dr_match(obj,l1egs,0.2)
-            if l1eg_obj:
-                for var_ in self.l1eg_vars:
-                    var_.fill(l1eg_obj,objnr)
+           ##if l1eg_obj:
+           ##    for var_ in self.l1eg_vars:
+           ##        var_.fill(l1eg_obj,objnr)
 
-
+        '''
         self.trig_res.fill(self.evtdata)
         for var_ in self.trig_vars:
             var_.fill(self.trig_res)
-
         self.l1_upgrade_filler.Reset()
         self.l1_upgrade_filler.SetEm(self.evtdata.get("l1egamma"),self.max_l1_upgrade)
         self.l1_upgrade_filler.SetTau(self.evtdata.get("l1tau"),self.max_l1_upgrade)
         self.l1_upgrade_filler.SetJet(self.evtdata.get("l1jet"),self.max_l1_upgrade)
         self.l1_upgrade_filler.SetSum(self.evtdata.get("l1sum"),self.max_l1_upgrade)
         self.l1_upgrade_filler.SetMuon(self.evtdata.get("l1muon"),self.max_l1_upgrade)
-
+        '''
         self.tree.Fill()
 
 

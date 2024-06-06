@@ -26,7 +26,7 @@ def main():
     parser.add_argument('--out_filename','-o',default="output.root",help='output filename')
     parser.add_argument('--min_et','-m',default=10.,type=float,help='minimum eg et') 
     parser.add_argument('--weights','-w',default=None,help="weights filename")
-    parser.add_argument('--report','-r',default=10,type=int,help="report every N events")
+    parser.add_argument('--report','-r',default=1000,type=int,help="report every N events")
     parser.add_argument('--prefix','-p',default="",help='prefix to append to input files')
     args = parser.parse_args()
         

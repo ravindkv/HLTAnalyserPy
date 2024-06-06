@@ -135,6 +135,9 @@ def call_func(obj,func_str):
 def get_filenames(input_filenames,prefix=""):
     output_filenames = []
     for filename in input_filenames:
+        if not os.path.exists(filename):
+            print("%s does not exist, ignoreing this"%filename)
+            continue
         if not filename.endswith(".root"):
             with open(filename) as f:
                 output_filenames.extend(['{}{}'.format(prefix,l.rstrip()) for l in f])
